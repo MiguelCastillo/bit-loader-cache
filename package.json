@@ -4,6 +4,7 @@
   "description": "Cache plugin for bit-loader",
   "main": "index.js",
   "scripts": {
+    "test": "eslint *.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,8 @@
   "homepage": "https://github.com/MiguelCastillo/bit-loader-cache#readme",
   "dependencies": {
     "bit-plugin-builder": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.5.0"
   }
 }
