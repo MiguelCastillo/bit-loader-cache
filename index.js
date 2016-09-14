@@ -1,12 +1,12 @@
 var PluginBuilder = require("bit-plugin-builder");
 var crypto = require("crypto");
-var fs = require("fs");
+var smallDB = require("./smallDB");
 
 function factory(options) {
   var settings = options || {};
   var filePath = settings.dest || "./cache.json";
   var timeout = settings.timeout || 3000;
-  var db = settings.db || smallDB(filePath);
+  var db = settings.connector || smallDB(filePath);
 
   function getHash(message) {
     return crypto
@@ -37,12 +37,13 @@ function factory(options) {
   }
 
   var write = debounce(function() {
-    db.save();
+    db.flush();
   }, timeout);
 
   function precompile(meta) {
-    db.set(meta);
-    write();
+    Promise.resolve(db.set(meta)).then(function() {
+      write();
+    });
   }
 
   return PluginBuilder
@@ -53,39 +54,6 @@ function factory(options) {
     })
     .configure(settings)
     .build();
-}
-
-function smallDB(filePath) {
-  var _cache = readCache();
-
-  function readCache() {
-    try {
-      fs.statSync(filePath);
-    }
-    catch(ex) {
-      fs.writeFileSync(filePath, "{}");
-    }
-
-    return JSON.parse(fs.readFileSync(filePath));
-  }
-
-  function writeCache() {
-    fs.writeFileSync(filePath, JSON.stringify(_cache));
-  }
-
-  function getItem(id) {
-    return _cache[id];
-  }
-
-  function setItem(meta) {
-    _cache[meta.path] = meta;
-  }
-
-  return {
-    get: getItem,
-    set: setItem,
-    save: writeCache
-  };
 }
 
 function debounce(fn, timeout) {
