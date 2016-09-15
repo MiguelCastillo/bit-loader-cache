@@ -41,9 +41,9 @@ function factory(options) {
   }, timeout);
 
   function precompile(meta) {
-    Promise.resolve(db.set(normalizePath(meta.path), meta)).then(function() {
-      write();
-    });
+    Promise
+      .resolve(db.set(normalizePath(meta.path), meta))
+      .then(write);
   }
 
   return PluginBuilder
