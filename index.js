@@ -1,12 +1,12 @@
 var PluginBuilder = require("bit-plugin-builder");
 var crypto = require("crypto");
-var smallDB = require("./smallDB");
+var path = require("path");
+var smallDB = require("./connectors/smallDB");
 
 function factory(options) {
   var settings = options || {};
-  var filePath = settings.dest || "./cache.json";
   var timeout = settings.timeout || 3000;
-  var db = settings.connector || smallDB(filePath);
+  var db = settings.connector || smallDB(settings.dest || "./cache.json");
 
   function getHash(message) {
     return crypto
@@ -22,7 +22,7 @@ function factory(options) {
 
     var hash = getHash(meta.source.toString());
 
-    return Promise.resolve(db.get(meta.path)).then(function(item) {
+    return Promise.resolve(db.get(normalizePath(meta.path))).then(function(item) {
       if (item) {
         if (item.hash === hash) {
           item.state = "loaded";
@@ -37,11 +37,11 @@ function factory(options) {
   }
 
   var write = debounce(function() {
-    db.flush();
+    db.save();
   }, timeout);
 
   function precompile(meta) {
-    Promise.resolve(db.set(meta)).then(function() {
+    Promise.resolve(db.set(normalizePath(meta.path), meta)).then(function() {
       write();
     });
   }
@@ -66,6 +66,10 @@ function debounce(fn, timeout) {
 
     _timer = setTimeout(fn, timeout);
   };
+}
+
+function normalizePath(filepath) {
+  return path.relative(".", filepath);
 }
 
 module.exports = factory;

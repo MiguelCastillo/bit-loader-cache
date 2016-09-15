@@ -22,14 +22,14 @@ function smallDB(filePath) {
     return _cache[id];
   }
 
-  function setItem(meta) {
-    _cache[meta.path] = meta;
+  function setItem(id, meta) {
+    _cache[id] = meta;
   }
 
   return {
     get: getItem,
     set: setItem,
-    flush: writeCache
+    save: writeCache
   };
 }
 

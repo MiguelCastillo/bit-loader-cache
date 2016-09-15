@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/MiguelCastillo/bit-loader-cache#readme",
   "dependencies": {
-    "bit-plugin-builder": "^1.2.0"
+    "bit-plugin-builder": "^1.2.0",
+    "elasticsearch": "^11.0.1"
   },
   "devDependencies": {
     "eslint": "^3.5.0"
