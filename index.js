@@ -6,7 +6,7 @@ var smallDB = require("./connectors/smallDB");
 function factory(options) {
   var settings = options || {};
   var timeout = settings.timeout || 3000;
-  var db = settings.connector || smallDB(settings.dest || "./cache.json");
+  var db = settings.connector || smallDB(settings.dest || ".cache.json");
 
   function getHash(message) {
     return crypto
