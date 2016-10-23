@@ -1,6 +1,6 @@
 {
   "name": "bit-loader-cache",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Cache plugin for bit-loader",
   "main": "index.js",
   "scripts": {
