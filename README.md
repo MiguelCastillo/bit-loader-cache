@@ -2,7 +2,7 @@
 Caching plugin for bit-loader. This helps increase build times after initial build.
 
 
-# Options and usage
+# options and usage
 
 ``` javascript
 var Bitbundler = require("bit-bundler");
