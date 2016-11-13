@@ -1,7 +1,7 @@
 # bit-loader-cache
 Caching plugin for bit-loader. This helps increase build times after initial build.
 
-Compatible with:
+## compatible with:
 
 - [bit-bundler](https://github.com/MiguelCastillo/bit-bundler)
 
