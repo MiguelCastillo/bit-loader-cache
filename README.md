@@ -21,7 +21,7 @@ var bitbundler = new Bitbundler({
 ```
 
 ## timeout
-Write operations a throttled to prevent nasty issues with performance, and you can control how frequently the throttle tries to refresh in milliseconds.  Default value is `3000`, which is 3 seconds.
+Write operations are throttled to prevent nasty issues with performance, and you can control how frequently write operations are retried (in milliseconds). Default value is `3000` milliseconds, which is 3 seconds.
 
 ``` javascript
 cachePlugin({
@@ -30,7 +30,7 @@ cachePlugin({
 ```
 
 ## dest
-File name to write the cache to. Defaults to `.bundler-cache.json`
+File name to write the cache to. Defaults to `.bundler-cache.json` and written to the current working directory.
 
 ``` javascript
 cachePlugin({
@@ -39,11 +39,15 @@ cachePlugin({
 ```
 
 ## connector
-The cache plugin has the concept of connectors, which is basically a small interface you can implement to write custom data sources.  A sample connector is an `elasticsearch` connector.
+The cache plugin has the concept of connectors, which is basically a small interface you can implement for writing custom data sources. The cache plugin implements one to provide the default caching behavior of writing to local disk.
 
-The interface for the connection trivial.  A `set`, which takes in an id and a payload to store. A `get`, which takes the id used in the `set`. And a `save` which is called whenever changes can be flushed.
+The interface for a connector is relatively trivial. They are all `Promise` compatible.
 
-You can take a look at the [default connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/smallDB.js), which basically just writes the cache to the local disk.  You can also take a look at the [elasticsearch connection](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/elasticsearch.js) for a more interesting implementation.
+- `set`, which takes in an id and a payload to store.
+- `get`, which takes the id from a `set` operation.
+- `save` which is called whenever changes should be flushed.
+
+You can take a look at the [default connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/smallDB.js), which basically just writes to the local disk.  You can also take a look at the [elasticsearch connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/elasticsearch.js) for a more interesting implementation.
 
 When caching to elasticsearch you can allow other folks to connect to it which seems like a fun experiment for distributed caching.
 
