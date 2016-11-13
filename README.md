@@ -45,6 +45,8 @@ The interface for the connection trivial.  A `set`, which takes in an id and a p
 
 You can take a look at the [default connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/smallDB.js), which basically just writes the cache to the local disk.  You can also take a look at the [elasticsearch connection](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/elasticsearch.js) for a more interesting implementation.
 
+When caching to elasticsearch you can allow other folks to connect to it which seems like a fun experiment for distributed caching.
+
 The elasticsearch connector takes three options.
 
 ``` javascript
