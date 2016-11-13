@@ -39,7 +39,7 @@ cachePlugin({
 ```
 
 ## connector
-The cache plugin has the concept of connectors, which is basically a small interface you can use write to custom data source.  A sample connector is an `elasticsearch` connector.
+The cache plugin has the concept of connectors, which is basically a small interface you can implement to write custom data sources.  A sample connector is an `elasticsearch` connector.
 
 The interface for the connection trivial.  A `set`, which takes in an id and a payload to store. A `get`, which takes the id used in the `set`. And a `save` which is called whenever changes can be flushed.
 
