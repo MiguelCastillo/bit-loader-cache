@@ -113,10 +113,34 @@ bitbundler.bundle({
 
 ## Docker
 
-If you are looking to spin up elasticsearch or redis servers, you can use Docker to get this up and running very quickly.
+### docker-compose
+
+There are a couple of docker-compose files for spinning an elasticsearch and a redis environment.  You can run whichever you want to work with.
+
+#### Elasticsearch
+
+To spin up elasticsearch as well as kibana for a UI to run queries on elasticsearch (and more) you can use the `es-docker-compose.yml` configuration file.
+
+```
+$ docker-compose -f es-docker-compose.yml up
+```
+
+#### Redis
+
+To spin up a redis environment quickly you can use the `redis-docker-compose.yaml` configuration file.
 
 
-### Elasticsearch
+```
+$ docker-compose -f redis-docker-compose.yml up
+```
+
+
+### The long route - docker run
+
+If you are looking to spin up elasticsearch or redis servers without docker-compose, you can use `docker run` to get up and running very quickly.
+
+
+#### Elasticsearch
 
 Command to spin up an Elasticsearch image
 
@@ -125,7 +149,7 @@ $ docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.el
 ```
 
 
-### Kibana server
+#### Kibana server
 
 Command to spin up a Kibana server for a friendly UI to interact with Elasticsearch. Once the server is started, you can see the Kibana UI in the browser by going to [http://localhost:5601](http://localhost:5601)
 
@@ -136,7 +160,7 @@ $ docker run -p 5601:5601 -e "ELASTICSEARCH_URL=http://ip-address:9200/" docker.
 ```
 
 
-### Redis server
+#### Redis server
 
 Command to spin up a redis server
 
