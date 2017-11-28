@@ -111,3 +111,37 @@ bitbundler.bundle({
   dest: "dest/cache_plugin.js"
 });
 ```
+
+
+## Docker
+
+If you are looking to spin up elasticsearch or redis servers, you can use Docker to get this up and running very quickly.
+
+
+### Elasticsearch
+
+Command to spin up an Elasticsearch image
+
+```
+$ docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.0.0
+```
+
+
+### Kibana server
+
+Command to spin up a Kibana server for a friendly UI to interact with Elasticsearch. Once the server is started, you can see the Kibana UI in the browser by going to [http://localhost:5601](http://localhost:5601)
+
+> Be sure to replace ip-address with the IP address of the host machine.
+
+```
+$ docker run -p 5601:5601 -e "ELASTICSEARCH_URL=http://ip-address:9200/" docker.elastic.co/kibana/kibana:6.0.0
+```
+
+
+### Redis server
+
+Command to spin up a redis server
+
+```
+$ docker run -p 6379:6379 redis
+```
