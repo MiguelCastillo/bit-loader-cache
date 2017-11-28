@@ -57,7 +57,7 @@ Other connectors included are:
 
 ## Examples
 
-When caching to elasticsearch you can allow other folks to connect to it which seems like a fun experiment for distributed caching.
+### Elasticsearch
 
 The elasticsearch connector takes three options.
 
@@ -66,8 +66,6 @@ const var index = options.index || "bit_bundler_cache";
 const type = options.type || "modules";
 const host = options.host || "localhost:9200";
 ```
-
-### Example
 
 ``` javascript
 const Bitbundler = require("bit-bundler");
@@ -92,7 +90,7 @@ bitbundler.bundle({
 ```
 
 
-The redis plugin is also very straight forward.
+### Redis
 
 ``` javascript
 const Bitbundler = require("bit-bundler");
