@@ -11,15 +11,15 @@ class esConnector extends IConnector {
     super();
 
     options = options || {};
-    var index = options.index || "bit_bundler_cache";
-    var type = options.type || "modules";
-    var host = options.host || "localhost:9200";
+    const index = this.index = options.index || "bit_bundler_cache";
+    const type = this.type = options.type || "modules";
+    const host = this.host = options.host || "localhost:9200";
   
     this.client = new elasticsearch.Client({
       host: host
     });
   
-    this.esIndex = client.index({
+    this.esIndex = this.client.index({
       index: index,
       type: type,
       body: {}
@@ -28,10 +28,10 @@ class esConnector extends IConnector {
 
 
   get(id) {
-    return this.esIndex.then(function() {
+    return this.esIndex.then(() => {
       return this.client.search({
-        index: index,
-        type: type,
+        index: this.index,
+        type: this.type,
         body: {
           query: {
             match: {
@@ -40,7 +40,7 @@ class esConnector extends IConnector {
           }
         }
       })
-      .then(function(result) {
+      .then((result) => {
         if (result.hits.total) {
           return result.hits.hits[0]._source;
         }
@@ -50,10 +50,10 @@ class esConnector extends IConnector {
 
   set(id, data) {
     // It would be nice to implement bulk updates.
-    return this.esIndex.then(function() {
+    return this.esIndex.then(() => {
       return this.client.index({
-        index: index,
-        type: type,
+        index: this.index,
+        type: this.type,
         id: id,
         body: data
       });
