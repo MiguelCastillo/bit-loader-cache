@@ -1,36 +1,39 @@
-var fs = require("fs");
+"use strict";
 
-function smallDB(filePath) {
-  var _cache = readCache();
+const IConnector = require("./iconnector");
+const fs = require("fs");
 
-  function readCache() {
-    try {
-      fs.statSync(filePath);
-    }
-    catch(ex) {
-      fs.writeFileSync(filePath, "{}");
-    }
-
-    return JSON.parse(fs.readFileSync(filePath));
+class smallDB extends IConnector {
+  constructor(filePath) {
+    super();
+    this.filePath = filePath;
+    this.cache = readCache(filePath);
   }
 
-  function writeCache() {
-    fs.writeFileSync(filePath, JSON.stringify(_cache));
+  get(id) {
+    return this.cache[id];
   }
 
-  function getItem(id) {
-    return _cache[id];
+  set(id, data) {
+    this.cache[id] = data;
   }
 
-  function setItem(id, meta) {
-    _cache[id] = meta;
+  flush() {
+    fs.writeFileSync(this.filePath, JSON.stringify(this.cache));
   }
-
-  return {
-    get: getItem,
-    set: setItem,
-    save: writeCache
-  };
 }
 
-module.exports = smallDB;
+function readCache(filePath) {
+  try {
+    fs.statSync(filePath);
+  }
+  catch(ex) {
+    fs.writeFileSync(filePath, "{}");
+  }
+
+  return JSON.parse(fs.readFileSync(filePath));
+}
+
+module.exports = function(options) {
+  return new smallDB(options);
+};

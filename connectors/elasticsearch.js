@@ -1,59 +1,66 @@
-var elasticsearch = require("elasticsearch");
+"use strict";
+
+const IConnector = require("./iconnector");
+const elasticsearch = require("elasticsearch");
 
 /**
  * elasticsearch plugin for reading and writing modules.
  */
-function elasticsearchConnector(options) {
-  options = options || {};
-  var index = options.index || "bit_bundler_cache";
-  var type = options.type || "modules";
-  var host = options.host || "localhost:9200";
+class esConnector extends IConnector {
+  constructor(options) {
+    super();
 
-  var client = new elasticsearch.Client({
-    host: host
-  });
+    options = options || {};
+    var index = options.index || "bit_bundler_cache";
+    var type = options.type || "modules";
+    var host = options.host || "localhost:9200";
+  
+    this.client = new elasticsearch.Client({
+      host: host
+    });
+  
+    this.esIndex = client.index({
+      index: index,
+      type: type,
+      body: {}
+    });
+  }
 
-  var esIndex = client.index({
-    index: index,
-    type: type,
-    body: {}
-  });
 
-  return {
-    save: function() {
-    },
-    get: function(id) {
-      return esIndex.then(function() {
-        return client.search({
-          index: index,
-          type: type,
-          body: {
-            query: {
-              match: {
-                _id: id
-              }
+  get(id) {
+    return this.esIndex.then(function() {
+      return this.client.search({
+        index: index,
+        type: type,
+        body: {
+          query: {
+            match: {
+              _id: id
             }
           }
-        })
-        .then(function(result) {
-          if (result.hits.total) {
-            return result.hits.hits[0]._source;
-          }
-        });
+        }
+      })
+      .then(function(result) {
+        if (result.hits.total) {
+          return result.hits.hits[0]._source;
+        }
       });
-    },
-    set: function(id, data) {
-      // It would be nice to implement bulk updates.
-      return esIndex.then(function() {
-        return client.index({
-          index: index,
-          type: type,
-          id: id,
-          body: data
-        });
+    });
+  }
+
+  set(id, data) {
+    // It would be nice to implement bulk updates.
+    return this.esIndex.then(function() {
+      return this.client.index({
+        index: index,
+        type: type,
+        id: id,
+        body: data
       });
-    }
-  };
+    });
+  }
 }
 
-module.exports = elasticsearchConnector;
+module.exports = function(options) {
+  return new esConnector(options);
+};

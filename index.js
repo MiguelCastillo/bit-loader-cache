@@ -6,10 +6,7 @@ function buildPlugin(options, builder) {
   var settings = options || {};
   var timeout = settings.timeout || 3000;
   var db = settings.connector || smallDB(settings.dest || ".bundler-cache.json");
-
-  var write = debounce(function() {
-    db.save();
-  }, timeout);
+  var write = debounce(() => db.flush(), timeout);
 
   function pretransform(meta) {
     if (!meta.source) {
