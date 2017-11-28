@@ -59,14 +59,6 @@ Other connectors included are:
 
 ### Elasticsearch
 
-The elasticsearch connector takes three options.
-
-``` javascript
-const var index = options.index || "bit_bundler_cache";
-const type = options.type || "modules";
-const host = options.host || "localhost:9200";
-```
-
 ``` javascript
 const Bitbundler = require("bit-bundler");
 const esConnector = require("bit-loader-cache/connectors/elasticsearch");
@@ -91,6 +83,9 @@ bitbundler.bundle({
 
 
 ### Redis
+
+The redis connector takes an optional flag `watch` that when set to true will keep the redis client connected until the process is stopped. Otherwise, the redis client exits when all the data is flushed.
+
 
 ``` javascript
 const Bitbundler = require("bit-bundler");
