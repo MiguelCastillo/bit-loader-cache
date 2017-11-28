@@ -84,7 +84,7 @@ bitbundler.bundle({
 
 ### Redis
 
-The redis connector takes an optional flag `watch` that when set to true will keep the redis client connected until the process is stopped. Otherwise, the redis client exits when all the data is flushed.
+The redis connector takes an optional flag `watch` that when set to true will keep the redis connector connected until the process is stopped. Otherwise, the redis connector exits when all the data is flushed.
 
 
 ``` javascript
