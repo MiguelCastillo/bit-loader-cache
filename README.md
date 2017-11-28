@@ -9,18 +9,13 @@ Caching plugin for bit-loader. This helps increase build times after initial bui
 # options and usage
 
 ``` javascript
-var Bitbundler = require("bit-bundler");
-var jsPlugin = require("bit-loader-js");
-var cachePlugin = require("bit-loader-cache");
+const Bitbundler = require("bit-bundler");
 
-var bitbundler = new Bitbundler({
+const bitbundler = new Bitbundler({
   watch: true,
-  loader: {
-    plugins: [
-      jsPlugin(),
-      cachePlugin()
-    ]
-  }
+  loader: [
+    "bit-loader-cache"
+  ]
 })
 ```
 
@@ -43,47 +38,72 @@ cachePlugin({
 ```
 
 ## connector
-The cache plugin has the concept of connectors, which is basically a small interface you can implement for writing custom data sources. The cache plugin implements one to provide the default caching behavior of writing to local disk.
 
-The interface for a connector is relatively trivial. They are all `Promise` compatible.
+The cache plugin has the concept of connectors, which is basically a small interface you can implement for writing custom data sources.
+
+The interface for a connector is relatively trivial and they are `Promise` compatible.
 
 - `set`, which takes in an id and a payload to store.
 - `get`, which takes the id from a `set` operation.
-- `save` which is called whenever changes should be flushed.
+- `flush` which is called whenever changes should be flushed.
 
-You can take a look at the [default connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/smallDB.js), which basically just writes to the local disk.  You can also take a look at the [elasticsearch connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/elasticsearch.js) for a more interesting implementation.
+You can take a look at the [default connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/smallDB.js), which basically just writes to the local disk.
+
+Other connectors included are:
+
+- [elasticsearch connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/elasticsearch.js)
+- [redis connector](https://github.com/MiguelCastillo/bit-loader-cache/blob/master/connectors/redis.js)
+
+
+## Examples
 
 When caching to elasticsearch you can allow other folks to connect to it which seems like a fun experiment for distributed caching.
 
 The elasticsearch connector takes three options.
 
 ``` javascript
-var index = options.index || "bit_bundler_cache";
-var type = options.type || "modules";
-var host = options.host || "localhost:9200";
+const var index = options.index || "bit_bundler_cache";
+const type = options.type || "modules";
+const host = options.host || "localhost:9200";
 ```
 
 ### Example
 
 ``` javascript
-var Bitbundler = require("bit-bundler");
-var jsPlugin = require("bit-loader-js");
-var cachePlugin = require("bit-loader-cache");
-var elasticsearchConnector = require("bit-loader-cache/connectors/elasticsearch");
+const Bitbundler = require("bit-bundler");
+const esConnector = require("bit-loader-cache/connectors/elasticsearch");
 
-var bitbundler = new Bitbundler({
-  loader: {
-    plugins: [
-      jsPlugin(),
-      cachePlugin({
-        connector: elasticsearchConnector({
-          host: "localhost:9200",
-          index: "cache_example",
-          type: "modules"
-        })
+const bitbundler = new Bitbundler({
+  loader: [
+    [ "bit-loader-cache", {
+      connector: esConnector({
+        host: "localhost:9200",
+        index: "cache_example",
+        type: "modules"
       })
-    ]
-  }
+    })
+  ]
+});
+
+bitbundler.bundle({
+  src: "src/main.js",
+  dest: "dest/cache_plugin.js"
+});
+```
+
+
+The redis plugin is also very straight forward.
+
+``` javascript
+const Bitbundler = require("bit-bundler");
+const redisConnector = require("bit-loader-cache/connectors/redis");
+
+const bitbundler = new Bitbundler({
+  loader: [
+    [ "bit-loader-cache", {
+      connector: redisConnector()
+    }]
+  ]
 });
 
 bitbundler.bundle({
