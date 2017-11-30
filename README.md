@@ -1,4 +1,6 @@
 # bit-loader-cache
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/MiguelCastillo/bit-loader-cache.svg)](https://greenkeeper.io/)
 Caching plugin for bit-loader. This helps increase build times after initial build.
 
 ## compatible with:
