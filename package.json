@@ -25,10 +25,10 @@
   "homepage": "https://github.com/MiguelCastillo/bit-loader-cache#readme",
   "dependencies": {
     "belty": "^5.1.0",
-    "elasticsearch": "^11.0.1"
+    "elasticsearch": "^14.0.0"
   },
   "devDependencies": {
-    "eslint": "^3.5.0",
+    "eslint": "^4.12.1",
     "redis": "^2.8.0"
   }
 }
