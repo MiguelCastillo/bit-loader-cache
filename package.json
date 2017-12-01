@@ -15,6 +15,7 @@
   },
   "keywords": [
     "bit-loader",
+    "bit-bundler",
     "bit-loader-plugin"
   ],
   "author": "Miguel Castillo <manchagnu@gmail.com>",
