@@ -8,7 +8,7 @@ function buildPlugin(options, builder) {
   var db = settings.connector || smallDB(settings.dest || ".bundler-cache.json");
   var write = debounce(() => db.flush(), timeout);
 
-  function pretransform(meta) {
+  function postfetch(meta) {
     if (!meta.source) {
       return;
     }
@@ -31,7 +31,7 @@ function buildPlugin(options, builder) {
       });
   }
 
-  function precompile(meta) {
+  function postdependency(meta) {
     Promise
       .resolve(db.set(normalizePath(meta.path), meta))
       .then(write);
@@ -39,8 +39,8 @@ function buildPlugin(options, builder) {
 
   return builder
     .configure({
-      pretransform: pretransform,
-      precompile: precompile
+      postfetch: postfetch,
+      postdependency: postdependency
     })
     .configure(settings);
 }
