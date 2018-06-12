@@ -1,5 +1,5 @@
 {
-  "name": "bit-loader-cache",
+  "name": "@bit/loader-cache",
   "version": "1.2.0",
   "description": "Cache plugin for bit-loader",
   "main": "index.js",
