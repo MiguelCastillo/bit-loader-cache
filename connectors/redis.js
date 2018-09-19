@@ -2,7 +2,7 @@
 
 const IConnector = require("./iconnector");
 const redis = require("redis");
-const utils = require("belty")
+const utils = require("belty");
 
 class Redis extends IConnector {
   constructor(options) {
