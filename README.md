@@ -12,12 +12,12 @@ Caching plugin for bit-loader. This helps increase build times after initial bui
 # options and usage
 
 ``` javascript
-const Bitbundler = require("bit-bundler");
+const Bitbundler = require("@bit/bundler");
 
 const bitbundler = new Bitbundler({
   watch: true,
   loader: [
-    "bit-loader-cache"
+    "@bit/loader-cache"
   ]
 })
 ```
@@ -63,12 +63,12 @@ Other connectors included are:
 ### Elasticsearch
 
 ``` javascript
-const Bitbundler = require("bit-bundler");
-const esConnector = require("bit-loader-cache/connectors/elasticsearch");
+const Bitbundler = require("@bit/bundler");
+const esConnector = require("@bit/loader-cache/connectors/elasticsearch");
 
 const bitbundler = new Bitbundler({
   loader: [
-    [ "bit-loader-cache", {
+    [ "@bit/loader-cache", {
       connector: esConnector({
         host: "localhost:9200",
         index: "cache_example",
@@ -91,12 +91,12 @@ The redis connector takes an optional flag `watch` that when set to true will ke
 
 
 ``` javascript
-const Bitbundler = require("bit-bundler");
-const redisConnector = require("bit-loader-cache/connectors/redis");
+const Bitbundler = require("@bit/bundler");
+const redisConnector = require("@bit/loader-cache/connectors/redis");
 
 const bitbundler = new Bitbundler({
   loader: [
-    [ "bit-loader-cache", {
+    [ "@bit/loader-cache", {
       connector: redisConnector()
     }]
   ]
